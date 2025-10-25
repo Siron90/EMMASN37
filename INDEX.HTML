@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForexPro - Your Forex Trading Companion</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #1a3a8f;
+            --secondary: #f7931a;
+            --dark: #1e2a4a;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Navigation */
+        header {
+            background-color: var(--dark);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(30, 42, 74, 0.8), rgba(30, 42, 74, 0.9)), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e08515;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Features */
+        .features {
+            background-color: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* Trading Pairs */
+        .trading-pairs {
+            background-color: #f8f9fa;
+        }
+        
+        .pairs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .pairs-table th, .pairs-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .pairs-table th {
+            background-color: var(--dark);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .pairs-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .price-up {
+            color: var(--success);
+        }
+        
+        .price-down {
+            color: var(--danger);
+        }
+        
+        /* Trading Platforms */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .platform-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .platform-img {
+            height: 200px;
+            background-color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .platform-content {
+            padding: 1.5rem;
+        }
+        
+        .platform-content h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* Education */
+        .education {
+            background-color: #f8f9fa;
+        }
+        
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .education-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .education-img {
+            height: 180px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+        
+        .education-content {
+            padding: 1.5rem;
+        }
+        
+        .education-content h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-col h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #b0b7c3;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b7c3;
+        }
+        
+        /* Page Content */
+        .page-content {
+            padding: 3rem 0;
+            min-height: 70vh;
+        }
+        
+        .page-header {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #b0b7c3;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark);
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.8rem 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 1rem;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Forex<span>Pro</span></div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="trading.html">Trading</a></li>
+                    <li><a href="platforms.html">Platforms</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="mobile-menu">☰</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home" class="page-content" style="display: block;">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="container">
+                <h1>Master the Forex Market with Confidence</h1>
+                <p>Join thousands of traders using our advanced tools, educational resources, and expert insights to navigate the world's largest financial market.</p>
+                <a href="#" class="btn">Start Trading</a>
+                <a href="#" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Why Trade with ForexPro?</h2>
+                    <p>We provide everything you need to succeed in forex trading</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Advanced Trading Tools</h3>
+                        <p>Access cutting-edge charting tools, technical indicators, and real-time market analysis to make informed trading decisions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎓</div>
+                        <h3>Comprehensive Education</h3>
+                        <p>Learn from expert traders with our extensive library of tutorials, webinars, and trading guides for all experience levels.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure & Regulated</h3>
+                        <p>Trade with confidence knowing your funds are protected with industry-leading security measures and regulatory compliance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trading Pairs Section -->
+        <section class="trading-pairs">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Popular Trading Pairs</h2>
+                    <p>Trade the world's most popular currency pairs with competitive spreads</p>
+                </div>
+                <table class="pairs-table">
+                    <thead>
+                        <tr>
+                            <th>Currency Pair</th>
+                            <th>Bid</th>
+                            <th>Ask</th>
+                            <th>Spread</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EUR/USD</td>
+                            <td>1.0854</td>
+                            <td>1.0856</td>
+                            <td>0.0002</td>
+                            <td class="price-up">+0.12%</td>
+                        </tr>
+                        <tr>
+                            <td>GBP/USD</td>
+                            <td>1.2702</td>
+                            <td>1.2705</td>
+                            <td>0.0003</td>
+                            <td class="price-down">-0.05%</td>
+                        </tr>
+                        <tr>
+                            <td>USD/JPY</td>
+                            <td>151.32</td>
+                            <td>151.35</td>
+                            <td>0.03</td>
+                            <td class="price-up">+0.18%</td>
+                        </tr>
+                        <tr>
+                            <td>USD/CAD</td>
+                            <td>1.3541</td>
+                            <td>1.3544</td>
+                            <td>0.0003</td>
+                            <td class="price-down">-0.08%</td>
+                        </tr>
+                        <tr>
+                            <td>AUD/USD</td>
+                            <td>0.6563</td>
+                            <td>0.6566</td>
+                            <td>0.0003</td>
+                            <td class="price-up">+0.21%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+
+    <!-- Trading Page -->
+    <section id="trading" class="page-content" style="display: none;">
+        <div class="page-header">
+            <div class="container">
+                <h1>Trading</h1>
+                <p>Explore our trading instruments, account types, and market analysis</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="section-title">
+                <h2>Account Types</h2>
+                <p>Choose the account that fits your trading style and experience level</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Standard Account</h3>
+                    <p>Perfect for beginners with access to all major currency pairs and educational resources.</p>
+                    <ul>
+                        <li>Minimum deposit: $100</li>
+                        <li>Leverage up to 1:30</li>
+                        <li>Spread from 1.2 pips</li>
+                        <li>Free educational materials</li>
+                    </ul>
+                    <a href="#" class="btn" style="margin-top: 1rem;">Open Account</a>
+                </div>
+                <div class="feature-card">
+                    <h3>Pro Account</h3>
+                    <p>For experienced traders with advanced tools and lower trading costs.</p>
+                    <ul>
+                        <li>Minimum deposit: $5,000</li>
+                        <li>Leverage up to 1:100</li>
+                        <li>Spread from 0.8 pips</li>
+                        <li>Advanced charting tools</li>
+                    </ul>
+                    <a href="#" class="btn" style="margin-top: 1rem;">Open Account</a>
+                </div>
+                <div class="feature-card">
+                    <h3>VIP Account</h3>
+                    <p>Premium service for high-volume traders with personalized support.</p>
+                    <ul>
+                        <li>Minimum deposit: $25,000</li>
+                        <li>Leverage up to 1:200</li>
+                        <li>Spread from 0.2 pips</li>
+                        <li>Dedicated account manager</li>
+                    </ul>
+                    <a href="#" class="btn" style="margin-top: 1rem;">Open Account</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platforms Page -->
+    <section id="platforms" class="page-content" style="display: none;">
+        <div class="page-header">
+            <div class="container">
+                <h1>Trading Platforms</h1>
+                <p>Access the markets with our powerful and intuitive trading platforms</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="platforms-grid">
+                <div class="platform-card">
+                    <div class="platform-img">📱</div>
+                    <div class="platform-content">
+                        <h3>ForexPro Web Trader</h3>
+                        <p>Trade directly from your browser with our advanced web platform. No downloads required.</p>
+                        <ul>
+                            <li>Advanced charting with 50+ indicators</li>
+                            <li>One-click trading</li>
+                            <li>Real-time news and analysis</li>
+                            <li>Customizable workspace</li>
+                        </ul>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Try Web Platform</a>
+                    </div>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-img">📲</div>
+                    <div class="platform-content">
+                        <h3>Mobile Trading App</h3>
+                        <p>Trade on the go with our feature-rich mobile app for iOS and Android.</p>
+                        <ul>
+                            <li>Full trading functionality</li>
+                            <li>Push notifications for price alerts</li>
+                            <li>Advanced charting on mobile</li>
+                            <li>Secure biometric login</li>
+                        </ul>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Download App</a>
+                    </div>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-img">💻</div>
+                    <div class="platform-content">
+                        <h3>MetaTrader 5</h3>
+                        <p>The industry-standard platform with advanced trading capabilities and automated trading.</p>
+                        <ul>
+                            <li>Advanced technical analysis</li>
+                            <li>Algorithmic trading with Expert Advisors</li>
+                            <li>Multi-asset trading</li>
+                            <li>Depth of Market</li>
+                        </ul>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Download MT5</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Page -->
+    <section id="education" class="page-content" style="display: none;">
+        <div class="page-header">
+            <div class="container">
+                <h1>Education Center</h1>
+                <p>Build your trading knowledge with our comprehensive educational resources</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="education-grid">
+                <div class="education-card">
+                    <div class="education-img">📚</div>
+                    <div class="education-content">
+                        <h3>Beginner's Guide</h3>
+                        <p>Learn the basics of forex trading, from understanding currency pairs to placing your first trade.</p>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Start Learning</a>
+                    </div>
+                </div>
+                <div class="education-card">
+                    <div class="education-img">📊</div>
+                    <div class="education-content">
+                        <h3>Technical Analysis</h3>
+                        <p>Master chart patterns, indicators, and technical strategies used by professional traders.</p>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Explore Analysis</a>
+                    </div>
+                </div>
+                <div class="education-card">
+                    <div class="education-img">🎥</div>
+                    <div class="education-content">
+                        <h3>Video Tutorials</h3>
+                        <p>Watch step-by-step tutorials and trading demonstrations from our expert analysts.</p>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Watch Videos</a>
+                    </div>
+                </div>
+                <div class="education-card">
+                    <div class="education-img">📰</div>
+                    <div class="education-content">
+                        <h3>Market Analysis</h3>
+                        <p>Stay updated with daily market insights, economic calendar, and trading opportunities.</p>
+                        <a href="#" class="btn" style="margin-top: 1rem;">Read Analysis</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Page -->
+    <section id="about" class="page-content" style="display: none;">
+        <div class="page-header">
+            <div class="container">
+                <h1>About ForexPro</h1>
+                <p>Learn about our mission, values, and commitment to traders</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="feature-card">
+                <h2>Our Story</h2>
+                <p>ForexPro was founded in 2010 with a simple mission: to make forex trading accessible to everyone while providing the tools and education needed to trade successfully. Over the years, we've grown to serve traders in over 100 countries.</p>
+                
+                <h2 style="margin-top: 2rem;">Our Values</h2>
+                <ul>
+                    <li><strong>Transparency:</strong> We believe in clear pricing and honest communication with our clients.</li>
+                    <li><strong>Education:</strong> We're committed to providing comprehensive educational resources for traders of all levels.</li>
+                    <li><strong>Innovation:</strong> We continuously develop new tools and features to enhance the trading experience.</li>
+                    <li><strong>Security:</strong> Client funds and data protection are our top priorities.</li>
+                </ul>
+                
+                <h2 style="margin-top: 2rem;">Regulation & Security</h2>
+                <p>ForexPro is regulated by multiple financial authorities worldwide. We maintain segregated client accounts, use advanced encryption technology, and undergo regular audits to ensure the highest standards of security and compliance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Page -->
+    <section id="contact" class="page-content" style="display: none;">
+        <div class="page-header">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <p>Get in touch with our support team or visit our office</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Contact Information</h3>
+                    <p><strong>Email:</strong> support@forexpro.com</p>
+                    <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                    <p><strong>Address:</strong> 123 Trading Street, Financial District, New York, NY 10005</p>
+                    
+                    <h3 style="margin-top: 2rem;">Support Hours</h3>
+                    <p>24/5 Support during market hours</p>
+                    <p>Monday - Friday: 24 hours</p>
+                    <p>Weekend: Limited support</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Send Us a Message</h3>
+                    <form>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="name" style="display: block; margin-bottom: 0.5rem;">Name</label>
+                            <input type="text" id="name" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="email" style="display: block; margin-bottom: 0.5rem;">Email</label>
+                            <input type="email" id="email" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="subject" style="display: block; margin-bottom: 0.5rem;">Subject</label>
+                            <input type="text" id="subject" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="message" style="display: block; margin-bottom: 0.5rem;">Message</label>
+                            <textarea id="message" rows="5" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>ForexPro</h3>
+                    <p>Your trusted partner in forex trading. We provide advanced tools, education, and support to help you navigate the financial markets.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="trading.html">Trading</a></li>
+                        <li><a href="platforms.html">Platforms</a></li>
+                        <li><a href="education.html">Education</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Regulatory Information</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li>Email: support@forexpro.com</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>Address: 123 Trading Street, NY 10005</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ForexPro. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Forex trading involves significant risk of loss and is not suitable for all investors.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            // Mobile menu toggle
+            mobileMenu.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            
+            // Simple page navigation (in a real site, this would be separate pages)
+            const navItems = document.querySelectorAll('.nav-links a');
+            const pages = document.querySelectorAll('.page-content');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide all pages
+                    pages.forEach(page => {
+                        page.style.display = 'none';
+                    });
+                    
+                    // Show the selected page
+                    const pageId = this.getAttribute('href').replace('.html', '');
+                    document.getElementById(pageId).style.display = 'block';
+                    
+                    // Close mobile menu if open
+                    navLinks.classList.remove('active');
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
